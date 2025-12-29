@@ -399,6 +399,277 @@ router.post('/api/bookings', async (req, res) => {
 module.exports = router;
 ```
 
+### Live Question Widget Integration
+
+The live question feature allows visitors to ask questions directly from the website, providing instant engagement and capturing leads who may not be ready to book yet.
+
+#### Database Schema for Questions
+
+```sql
+CREATE TABLE questions (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    contact VARCHAR(255) NOT NULL, -- phone or email
+    question TEXT NOT NULL,
+    status ENUM('pending', 'answered', 'spam') DEFAULT 'pending',
+    answered_by INT, -- advisor ID
+    answer TEXT,
+    response_time INT, -- in minutes
+    source VARCHAR(50) DEFAULT 'live_widget',
+    utm_source VARCHAR(100),
+    utm_medium VARCHAR(100),
+    utm_campaign VARCHAR(100),
+    converted_to_booking BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    answered_at TIMESTAMP NULL,
+    INDEX idx_status (status),
+    INDEX idx_created (created_at),
+    INDEX idx_converted (converted_to_booking)
+);
+```
+
+#### API Endpoint Example (Node.js/Express)
+
+```javascript
+const express = require('express');
+const router = express.Router();
+
+router.post('/api/questions', async (req, res) => {
+    try {
+        const { name, contact, question } = req.body;
+
+        // Validate input
+        if (!name || !contact || !question) {
+            return res.status(400).json({ error: 'Missing required fields' });
+        }
+
+        // Basic spam detection
+        if (question.length < 10) {
+            return res.status(400).json({ error: 'Question too short' });
+        }
+
+        // Save to database
+        const questionRecord = await db.questions.create({
+            name,
+            contact,
+            question,
+            source: 'live_widget'
+        });
+
+        // Notify team immediately (Slack, email, SMS)
+        await notifyTeam({
+            title: 'New Question from Website',
+            name,
+            contact,
+            question,
+            questionId: questionRecord.id,
+            timestamp: new Date()
+        });
+
+        // Send auto-reply to user
+        if (contact.includes('@')) {
+            await sendAutoReplyEmail(contact, name, question);
+        } else {
+            await sendAutoReplySMS(contact, name);
+        }
+
+        res.json({
+            success: true,
+            questionId: questionRecord.id,
+            message: 'Question received! Our expert will respond within 5 minutes.',
+            estimatedResponseTime: '5 minutes'
+        });
+
+    } catch (error) {
+        console.error('Question submission error:', error);
+        res.status(500).json({ error: 'Failed to submit question. Please try again.' });
+    }
+});
+
+// Get question status (optional - for follow-up)
+router.get('/api/questions/:id', async (req, res) => {
+    try {
+        const question = await db.questions.findById(req.params.id);
+
+        if (!question) {
+            return res.status(404).json({ error: 'Question not found' });
+        }
+
+        res.json({
+            status: question.status,
+            answer: question.answer,
+            answeredAt: question.answered_at
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch question status' });
+    }
+});
+
+module.exports = router;
+```
+
+#### Team Notification Setup
+
+**Slack Integration:**
+```javascript
+async function notifyTeam(questionData) {
+    const slackWebhook = process.env.SLACK_WEBHOOK_URL;
+
+    await fetch(slackWebhook, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            text: '🔔 New Question Alert!',
+            blocks: [
+                {
+                    type: 'section',
+                    text: {
+                        type: 'mrkdwn',
+                        text: `*New Question from ${questionData.name}*\n\n*Contact:* ${questionData.contact}\n*Question:* ${questionData.question}`
+                    }
+                },
+                {
+                    type: 'actions',
+                    elements: [
+                        {
+                            type: 'button',
+                            text: { type: 'plain_text', text: 'Answer Now' },
+                            url: `https://admin.kolo.in/questions/${questionData.questionId}`
+                        }
+                    ]
+                }
+            ]
+        })
+    });
+}
+```
+
+**Email Notification:**
+```javascript
+async function sendAutoReplyEmail(email, name, question) {
+    const emailData = {
+        to: email,
+        from: 'support@kolo.in',
+        subject: '✅ We received your question!',
+        html: `
+            <h2>Hi ${name}!</h2>
+            <p>Thank you for reaching out to Kolo. We've received your question:</p>
+            <blockquote style="background: #f3f4f6; padding: 16px; border-left: 4px solid #10b981;">
+                ${question}
+            </blockquote>
+            <p><strong>Our expert advisors are reviewing your question and will respond within 5 minutes.</strong></p>
+            <p>In the meantime, would you like to:</p>
+            <ul>
+                <li><a href="https://kolo.in/book">Book a free 30-minute consultation</a></li>
+                <li><a href="https://wa.me/919633330492">Chat with us on WhatsApp</a></li>
+            </ul>
+            <p>Best regards,<br>The Kolo Team</p>
+        `
+    };
+
+    await sendGridClient.send(emailData);
+}
+```
+
+#### Frontend Integration
+
+The live question widget is already included in `PREVIEW-complete-design.html`. To connect it to your backend:
+
+```javascript
+// Update the form submission handler
+document.getElementById('questionForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const submitBtn = e.target.querySelector('.submit-question-btn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+
+    const formData = {
+        name: e.target.querySelector('input[type="text"]').value,
+        contact: e.target.querySelectorAll('input[type="text"]')[1].value,
+        question: e.target.querySelector('textarea').value
+    };
+
+    try {
+        const response = await fetch('/api/questions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            alert(`✅ ${data.message}`);
+            // Close modal and reset form
+            document.getElementById('questionModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            e.target.reset();
+        } else {
+            throw new Error(data.error || 'Submission failed');
+        }
+    } catch (error) {
+        alert('❌ Failed to submit question. Please try WhatsApp: +91 9633330492');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Question';
+    }
+});
+```
+
+#### Analytics Tracking
+
+Track question widget interactions:
+
+```javascript
+// Widget open
+document.getElementById('openQuestionModal').addEventListener('click', () => {
+    gtag('event', 'question_widget_open', {
+        event_category: 'engagement',
+        event_label: 'live_question_widget'
+    });
+});
+
+// Question submit
+gtag('event', 'question_submit', {
+    event_category: 'lead_generation',
+    event_label: 'live_question_widget',
+    value: 2999 // estimated value of question lead
+});
+
+// Response time tracking (for analytics)
+gtag('event', 'question_response_time', {
+    event_category: 'support',
+    event_label: 'live_question_widget',
+    value: responseTimeInMinutes
+});
+```
+
+#### Best Practices
+
+1. **Fast Response Times:**
+   - Set up mobile alerts for advisors
+   - Have auto-responses ready
+   - Track response time metrics
+   - Target: <5 minutes during business hours
+
+2. **Lead Nurturing:**
+   - Follow up unanswered questions within 1 hour
+   - Convert question leads to bookings
+   - Track conversion rate from questions to consultations
+
+3. **Spam Prevention:**
+   - Validate input length
+   - Rate limit by IP address
+   - Add honeypot fields
+   - Monitor for duplicate submissions
+
+4. **Conversion Optimization:**
+   - A/B test widget position (left vs right)
+   - Test different CTA text ("Ask a Question" vs "Get Instant Help")
+   - Experiment with response time messaging
+   - Add success stories below form
+
 ---
 
 ## Testing Checklist
