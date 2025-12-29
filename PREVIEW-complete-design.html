@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kolo - Complete New Design Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        /* HEADER */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            z-index: 1000;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .announcement-bar {
+            background: linear-gradient(90deg, #080814 0%, #1a1a2e 100%);
+            color: white;
+            padding: 12px 24px;
+            text-align: center;
+            font-size: 14px;
+            animation: slideDown 0.5s;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
+        .announcement-highlight {
+            color: #ffd400;
+            font-weight: 700;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 48px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #0066FF;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: #0066FF;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: #374151;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #0066FF;
+        }
+
+        .cta-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-2px);
+        }
+
+        .badge {
+            background: #ffd400;
+            color: #1a1a2e;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-left: 4px;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            background: linear-gradient(135deg, #080814 0%, #1a1a2e 50%, #16213e 100%);
+            color: white;
+            padding: 160px 24px 120px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.1) 0%, transparent 50%);
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-headline {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            background: linear-gradient(90deg, #ffffff 0%, #c4f1de 40%, #7cc3d9 70%, #4a8fbe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 0.8s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-subheadline {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 32px;
+            max-width: 700px;
+            animation: fadeInUp 0.8s 0.2s backwards;
+        }
+
+        .hero-highlight {
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .social-proof-bar {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 48px;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s 0.4s backwards;
+        }
+
+        .proof-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .proof-icon {
+            color: #00d4ff;
+        }
+
+        .proof-number {
+            font-weight: 700;
+            color: #00d4ff;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            margin-top: 48px;
+        }
+
+        /* BOOKING CARD */
+        .booking-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.8s 0.6s backwards;
+        }
+
+        .special-offer-badge {
+            background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 24px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .form-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+        }
+
+        .form-subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .availability {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: #ecfdf5;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .availability-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .availability-text {
+            font-size: 14px;
+            color: #065f46;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #0066FF;
+            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+        }
+
+        .cta-button {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px 32px;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(102, 126, 234, 0.5);
+        }
+
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 16px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .checkmark {
+            color: #10b981;
+            font-weight: 700;
+        }
+
+        /* TESTIMONIAL CARD */
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 32px;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.8s 0.8s backwards;
+        }
+
+        .testimonial-header {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .testimonial-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .testimonial-title {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 4px;
+        }
+
+        .testimonial-stars {
+            color: #fbbf24;
+        }
+
+        .testimonial-quote {
+            font-size: 18px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.95);
+            font-style: italic;
+            margin-bottom: 20px;
+            padding-left: 20px;
+            border-left: 3px solid #00d4ff;
+        }
+
+        .testimonial-project {
+            display: flex;
+            gap: 12px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .project-amount {
+            font-size: 20px;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .project-details {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* HOW IT WORKS */
+        .how-it-works {
+            padding: 80px 24px;
+            background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 48px;
+            color: #1a1a2e;
+        }
+
+        .steps {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .step {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .step:hover {
+            transform: translateY(-8px);
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 auto 20px;
+        }
+
+        .step h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 12px;
+        }
+
+        .step p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* COMPARISON SECTION */
+        .comparison {
+            padding: 80px 24px;
+            background: #f9fafb;
+        }
+
+        .comparison-grid {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .comparison-card {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .comparison-card.old {
+            border: 3px solid #ef4444;
+        }
+
+        .comparison-card.new {
+            border: 3px solid #10b981;
+        }
+
+        .comparison-label {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .comparison-card.old .comparison-label {
+            color: #ef4444;
+        }
+
+        .comparison-card.new .comparison-label {
+            color: #10b981;
+        }
+
+        .comparison-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .comparison-item:last-child {
+            border-bottom: none;
+        }
+
+        /* MOBILE */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 120px 20px 80px;
+            }
+
+            .hero-headline {
+                font-size: 32px;
+            }
+
+            .hero-subheadline {
+                font-size: 16px;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .social-proof-bar {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* STICKY CTA */
+        .sticky-cta {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 600;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+            cursor: pointer;
+            border: none;
+            z-index: 999;
+            animation: slideInRight 0.5s;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="announcement-bar">
+            <span>🎁 Limited Time Offer: <span class="announcement-highlight">50% OFF</span> on Smart Select Guide - Save ₹3,000! Ends Dec 20th</span>
+        </div>
+
+        <nav class="nav-container">
+            <div class="nav-left">
+                <a href="/" class="logo">
+                    <div class="logo-icon">K</div>
+                    <span>Kolo</span>
+                </a>
+
+                <ul class="nav-links">
+                    <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+                    <li><a href="#pricing" class="nav-link">Pricing</a></li>
+                    <li><a href="#reviews" class="nav-link">Reviews</a></li>
+                    <li><a href="#projects" class="nav-link">Projects</a></li>
+                </ul>
+            </div>
+
+            <button class="cta-primary">
+                Book Free Call <span class="badge">50% OFF</span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-headline">
+                1000+ Homeowners Saved ₹Lakhs<br>
+                Building Their Dream Homes
+            </h1>
+
+            <p class="hero-subheadline">
+                Get <span class="hero-highlight">unbiased expert guidance</span> to evaluate professionals,
+                compare quotes, and make confident decisions—from ₹2,999
+            </p>
+
+            <div class="social-proof-bar">
+                <div class="proof-item">
+                    <span class="proof-icon">⭐</span>
+                    <span><span class="proof-number">4.9/5</span> from 500+ reviews</span>
+                </div>
+                <div class="proof-item">
+                    <span class="proof-icon">✓</span>
+                    <span><span class="proof-number">1000+</span> projects completed</span>
+                </div>
+                <div class="proof-item">
+                    <span class="proof-icon">📅</span>
+                    <span>Next slot: <span class="proof-number">Tomorrow 11 AM</span></span>
+                </div>
+            </div>
+
+            <div class="hero-grid">
+                <!-- BOOKING FORM -->
+                <div class="booking-card">
+                    <div class="special-offer-badge">
+                        🎁 Limited Time: 50% OFF - Save ₹3,000!
+                    </div>
+
+                    <h2 class="form-title">Book Your Free Consultation</h2>
+                    <p class="form-subtitle">30-minute call with an expert advisor</p>
+
+                    <div class="availability">
+                        <span class="availability-dot"></span>
+                        <span class="availability-text">3 slots available today</span>
+                    </div>
+
+                    <form>
+                        <div class="form-group">
+                            <label class="form-label">Your Name *</label>
+                            <input type="text" class="form-input" placeholder="e.g., Rajesh Kumar">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Phone Number *</label>
+                            <input type="tel" class="form-input" placeholder="e.g., 9876543210">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Project Type *</label>
+                            <select class="form-select">
+                                <option>Select your project</option>
+                                <option>New Construction</option>
+                                <option>Home Renovation</option>
+                                <option>Interior Design</option>
+                                <option>Construction + Interior</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="cta-button">
+                            📅 Book Free Consultation Now
+                        </button>
+
+                        <div class="trust-badges">
+                            <div><span class="checkmark">✓</span> No credit card required</div>
+                            <div><span class="checkmark">✓</span> 30-day money back</div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- TESTIMONIAL -->
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">D</div>
+                        <div>
+                            <div class="testimonial-name">Deepika</div>
+                            <div class="testimonial-title">Teacher, Trivandrum</div>
+                            <div class="testimonial-stars">★★★★★</div>
+                        </div>
+                    </div>
+
+                    <blockquote class="testimonial-quote">
+                        "As someone with very little experience, I had many doubts. Yaseen patiently
+                        addressed all my queries and helped me save over ₹4 lakhs by comparing quotes
+                        and negotiating better rates."
+                    </blockquote>
+
+                    <div class="testimonial-project">
+                        <div>
+                            <div class="project-amount">₹40L Project</div>
+                            <div class="project-details">Construction + Interior · Sreekaryam</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="how-it-works" id="how-it-works">
+        <h2 class="section-title">From Confused to Confident in 3 Simple Steps</h2>
+
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Book Your Free Call</h3>
+                <p>30-minute consultation with an expert advisor. We understand your project, budget, and concerns.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Get Your Personalized Plan</h3>
+                <p>Custom moodboard, ranked professionals, and detailed quote analysis—everything you need to decide.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Build with Confidence</h3>
+                <p>Negotiate best prices, track progress, and get support whenever needed. Your dream home, executed perfectly.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- BEFORE/AFTER COMPARISON -->
+    <section class="comparison">
+        <h2 class="section-title">Before Kolo vs. After Kolo</h2>
+
+        <div class="comparison-grid">
+            <div class="comparison-card old">
+                <div class="comparison-label">❌ Without Kolo</div>
+                <div class="comparison-item">❌ Confusing quotes</div>
+                <div class="comparison-item">❌ Unknown contractors</div>
+                <div class="comparison-item">❌ Guessing at fair prices</div>
+                <div class="comparison-item">❌ Stressful decisions</div>
+                <div class="comparison-item">❌ Budget overruns</div>
+                <div class="comparison-item">❌ Quality surprises</div>
+            </div>
+
+            <div class="comparison-card new">
+                <div class="comparison-label">✅ With Kolo</div>
+                <div class="comparison-item">✅ Clear analysis report</div>
+                <div class="comparison-item">✅ Verified, ranked professionals</div>
+                <div class="comparison-item">✅ Expert negotiation</div>
+                <div class="comparison-item">✅ Confident choices</div>
+                <div class="comparison-item">✅ Cost savings</div>
+                <div class="comparison-item">✅ Regular monitoring</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STICKY CTA -->
+    <button class="sticky-cta">
+        📅 Book Now - 50% OFF
+    </button>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Form submission demo
+        document.querySelector('form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('🎉 Demo: In production, this would book your appointment!\n\nYou would receive:\n✓ Instant confirmation SMS\n✓ Calendar invite\n✓ Reminder emails\n✓ Call from advisor');
+        });
+    </script>
+</body>
+</html>
