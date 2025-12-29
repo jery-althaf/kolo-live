@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kolo - Improved Hero Section</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #080814 0%, #1a1a2e 50%, #16213e 100%);
+            color: white;
+            padding: 80px 24px 120px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><path d="M0,300 Q300,100 600,300 T1200,300" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="2"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Updated Headline */
+        .hero-headline {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            background: linear-gradient(90deg, #ffffff 0%, #c4f1de 40%, #7cc3d9 70%, #4a8fbe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subheadline {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 32px;
+            max-width: 700px;
+        }
+
+        .hero-highlight {
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        /* Social Proof Bar */
+        .social-proof-bar {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .proof-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .proof-icon {
+            width: 24px;
+            height: 24px;
+            color: #00d4ff;
+        }
+
+        .proof-text {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .proof-number {
+            font-weight: 700;
+            color: #00d4ff;
+        }
+
+        /* Main Grid: Form on the left, Testimonial on right */
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            margin-top: 48px;
+        }
+
+        /* Booking Form */
+        .booking-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+        }
+
+        .form-subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .special-offer-badge {
+            background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 24px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #0066FF;
+            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+        }
+
+        .cta-button {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px 32px;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(102, 126, 234, 0.5);
+        }
+
+        .trust-badges {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 16px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .checkmark {
+            color: #10b981;
+            font-weight: 700;
+        }
+
+        /* Featured Testimonial Card */
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 32px;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .testimonial-header {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .testimonial-info {
+            flex: 1;
+        }
+
+        .testimonial-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .testimonial-title {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 4px;
+        }
+
+        .testimonial-stars {
+            color: #fbbf24;
+            font-size: 18px;
+        }
+
+        .testimonial-quote {
+            font-size: 18px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.95);
+            font-style: italic;
+            margin-bottom: 20px;
+            position: relative;
+            padding-left: 20px;
+            border-left: 3px solid #00d4ff;
+        }
+
+        .testimonial-project {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .project-amount {
+            font-size: 20px;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .project-details {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 48px 20px 80px;
+            }
+
+            .hero-headline {
+                font-size: 32px;
+            }
+
+            .hero-subheadline {
+                font-size: 16px;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .social-proof-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .booking-card {
+                padding: 24px;
+            }
+
+            .testimonial-card {
+                padding: 24px;
+            }
+        }
+
+        /* Availability Indicator */
+        .availability {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: #ecfdf5;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .availability-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .availability-text {
+            font-size: 14px;
+            color: #065f46;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <div class="hero-content">
+            <!-- Updated Headline -->
+            <h1 class="hero-headline">
+                1000+ Homeowners Saved ₹Lakhs<br>
+                Building Their Dream Homes
+            </h1>
+
+            <p class="hero-subheadline">
+                Get <span class="hero-highlight">unbiased expert guidance</span> to evaluate professionals,
+                compare quotes, and make confident decisions—from ₹2,999
+            </p>
+
+            <!-- Social Proof Bar -->
+            <div class="social-proof-bar">
+                <div class="proof-item">
+                    <svg class="proof-icon" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                    </svg>
+                    <span class="proof-text"><span class="proof-number">4.9/5</span> from 500+ reviews</span>
+                </div>
+                <div class="proof-item">
+                    <svg class="proof-icon" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    <span class="proof-text"><span class="proof-number">1000+</span> projects completed</span>
+                </div>
+                <div class="proof-item">
+                    <svg class="proof-icon" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                    </svg>
+                    <span class="proof-text">Next slot: <span class="proof-number">Tomorrow 11 AM</span></span>
+                </div>
+            </div>
+
+            <!-- Main Grid: Booking Form + Testimonial -->
+            <div class="hero-grid">
+                <!-- Booking Form -->
+                <div class="booking-card">
+                    <div class="special-offer-badge">
+                        🎁 Limited Time: 50% OFF - Save ₹3,000!
+                    </div>
+
+                    <h2 class="form-title">Book Your Free Consultation</h2>
+                    <p class="form-subtitle">30-minute call with an expert advisor</p>
+
+                    <div class="availability">
+                        <span class="availability-dot"></span>
+                        <span class="availability-text">3 slots available today</span>
+                    </div>
+
+                    <form id="bookingForm">
+                        <div class="form-group">
+                            <label class="form-label" for="name">Your Name *</label>
+                            <input
+                                type="text"
+                                id="name"
+                                class="form-input"
+                                placeholder="e.g., Rajesh Kumar"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="phone">Phone Number *</label>
+                            <input
+                                type="tel"
+                                id="phone"
+                                class="form-input"
+                                placeholder="e.g., 9876543210"
+                                pattern="[0-9]{10}"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="projectType">Project Type *</label>
+                            <select id="projectType" class="form-select" required>
+                                <option value="">Select your project</option>
+                                <option value="new-construction">New Construction</option>
+                                <option value="renovation">Home Renovation</option>
+                                <option value="interior">Interior Design</option>
+                                <option value="both">Construction + Interior</option>
+                                <option value="consultation">Just Exploring</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="budget">Estimated Budget</label>
+                            <select id="budget" class="form-select">
+                                <option value="">Select budget range</option>
+                                <option value="5-10">₹5L - ₹10L</option>
+                                <option value="10-20">₹10L - ₹20L</option>
+                                <option value="20-40">₹20L - ₹40L</option>
+                                <option value="40-75">₹40L - ₹75L</option>
+                                <option value="75+">₹75L+</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="cta-button">
+                            📅 Book Free Consultation Now
+                        </button>
+
+                        <div class="trust-badges">
+                            <div class="trust-badge">
+                                <span class="checkmark">✓</span>
+                                <span>No credit card required</span>
+                            </div>
+                            <div class="trust-badge">
+                                <span class="checkmark">✓</span>
+                                <span>30-day money back</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Featured Testimonial -->
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">D</div>
+                        <div class="testimonial-info">
+                            <div class="testimonial-name">Deepika</div>
+                            <div class="testimonial-title">Teacher, Trivandrum</div>
+                            <div class="testimonial-stars">★★★★★</div>
+                        </div>
+                    </div>
+
+                    <blockquote class="testimonial-quote">
+                        "As someone with very little experience, I had many doubts. Yaseen patiently
+                        addressed all my queries and helped me save over ₹4 lakhs by comparing quotes
+                        and negotiating better rates."
+                    </blockquote>
+
+                    <div class="testimonial-project">
+                        <div>
+                            <div class="project-amount">₹40L Project</div>
+                            <div class="project-details">Construction + Interior · Sreekaryam</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Form Submission Handler
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = {
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                projectType: document.getElementById('projectType').value,
+                budget: document.getElementById('budget').value
+            };
+
+            // Show loading state
+            const button = e.target.querySelector('.cta-button');
+            const originalText = button.innerHTML;
+            button.innerHTML = '⏳ Booking your slot...';
+            button.disabled = true;
+
+            // Simulate API call (replace with actual endpoint)
+            setTimeout(() => {
+                // Success state
+                button.innerHTML = '✓ Booked! Check your phone for confirmation';
+                button.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+
+                // Send to your backend
+                console.log('Form submitted:', formData);
+
+                // Optional: Redirect to thank you page
+                // window.location.href = '/thank-you';
+
+                // Or integrate with Calendly, etc.
+                // Calendly.initPopupWidget({url: 'https://calendly.com/your-link'});
+            }, 1500);
+        });
+
+        // Phone number formatting
+        document.getElementById('phone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 10) value = value.slice(0, 10);
+            e.target.value = value;
+        });
+    </script>
+</body>
+</html>
