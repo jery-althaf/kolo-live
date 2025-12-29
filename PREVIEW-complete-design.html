@@ -608,6 +608,247 @@
                 opacity: 1;
             }
         }
+
+        /* LIVE QUESTION WIDGET */
+        .question-widget {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 999;
+            animation: slideInLeft 0.5s;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .question-button {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .question-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(16, 185, 129, 0.5);
+        }
+
+        .question-icon {
+            font-size: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        .question-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s;
+        }
+
+        .question-modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .question-form-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.4s;
+            position: relative;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .question-form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .question-form-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s;
+        }
+
+        .close-button:hover {
+            color: #374151;
+        }
+
+        .question-form-subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: #ecfdf5;
+            border-radius: 20px;
+            margin-bottom: 24px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #065f46;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse-dot 1.5s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(1.2);
+            }
+        }
+
+        .question-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .question-textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            min-height: 120px;
+            resize: vertical;
+            transition: all 0.3s;
+        }
+
+        .question-textarea:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .submit-question-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 18px 32px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+        }
+
+        .submit-question-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(16, 185, 129, 0.5);
+        }
+
+        .response-time {
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+            margin-top: 12px;
+        }
+
+        .response-time strong {
+            color: #10b981;
+        }
+
+        /* Mobile adjustments for question widget */
+        @media (max-width: 768px) {
+            .question-widget {
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: 90px;
+            }
+
+            .question-button {
+                padding: 14px 20px;
+                font-size: 14px;
+            }
+
+            .question-form-container {
+                padding: 32px 24px;
+            }
+
+            .question-form-title {
+                font-size: 24px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -799,6 +1040,58 @@
         📅 Book Now - 50% OFF
     </button>
 
+    <!-- LIVE QUESTION WIDGET -->
+    <div class="question-widget">
+        <button class="question-button" id="openQuestionModal">
+            <span class="question-icon">💬</span>
+            <span>Ask a Question</span>
+        </button>
+    </div>
+
+    <!-- QUESTION MODAL -->
+    <div class="question-modal" id="questionModal">
+        <div class="question-form-container">
+            <div class="question-form-header">
+                <h3 class="question-form-title">Ask a Question</h3>
+                <button class="close-button" id="closeQuestionModal">&times;</button>
+            </div>
+
+            <div class="live-indicator">
+                <span class="live-dot"></span>
+                <span>Expert advisors online now</span>
+            </div>
+
+            <p class="question-form-subtitle">
+                Have a question about your project? Our experts are here to help!
+            </p>
+
+            <form class="question-form" id="questionForm">
+                <div class="form-group">
+                    <label class="form-label">Your Name *</label>
+                    <input type="text" class="form-input" placeholder="e.g., Rajesh Kumar" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Phone or Email *</label>
+                    <input type="text" class="form-input" placeholder="e.g., 9876543210 or email@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Your Question *</label>
+                    <textarea class="question-textarea" placeholder="e.g., What's the average cost for a 2000 sq ft home construction in Bangalore?" required></textarea>
+                </div>
+
+                <button type="submit" class="submit-question-btn">
+                    Send Question
+                </button>
+
+                <p class="response-time">
+                    Average response time: <strong>Under 5 minutes</strong>
+                </p>
+            </form>
+        </div>
+    </div>
+
     <script>
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -811,10 +1104,62 @@
             });
         });
 
-        // Form submission demo
+        // Form submission demo for booking form
         document.querySelector('form').addEventListener('submit', (e) => {
             e.preventDefault();
             alert('🎉 Demo: In production, this would book your appointment!\n\nYou would receive:\n✓ Instant confirmation SMS\n✓ Calendar invite\n✓ Reminder emails\n✓ Call from advisor');
+        });
+
+        // Question widget functionality
+        const questionModal = document.getElementById('questionModal');
+        const openQuestionBtn = document.getElementById('openQuestionModal');
+        const closeQuestionBtn = document.getElementById('closeQuestionModal');
+        const questionForm = document.getElementById('questionForm');
+
+        // Open modal
+        openQuestionBtn.addEventListener('click', () => {
+            questionModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        // Close modal
+        closeQuestionBtn.addEventListener('click', () => {
+            questionModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        // Close on backdrop click
+        questionModal.addEventListener('click', (e) => {
+            if (e.target === questionModal) {
+                questionModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Close on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && questionModal.classList.contains('active')) {
+                questionModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Question form submission
+        questionForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(questionForm);
+            const name = questionForm.querySelector('input[type="text"]').value;
+            const contact = questionForm.querySelectorAll('input[type="text"]')[1].value;
+            const question = questionForm.querySelector('textarea').value;
+
+            // Demo alert
+            alert(`✅ Question Submitted Successfully!\n\nThank you, ${name}!\n\nOur expert advisors will respond within 5 minutes via ${contact.includes('@') ? 'email' : 'WhatsApp/phone'}.\n\nYour Question:\n"${question}"\n\n💡 In production, this would:\n✓ Save to database\n✓ Notify advisor team\n✓ Send auto-reply\n✓ Track in CRM`);
+
+            // Close modal and reset form
+            questionModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            questionForm.reset();
         });
     </script>
 </body>

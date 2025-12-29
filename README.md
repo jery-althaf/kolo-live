@@ -76,6 +76,12 @@ start PREVIEW-complete-design.html       # Windows
 ✅ After:  Simple form → Instant booking → Automated follow-up
 ```
 
+#### Live Engagement 🆕
+```
+❌ Before: No way to ask quick questions
+✅ After:  Live question widget → <5 min expert response
+```
+
 ---
 
 ## 📊 Expected Results
@@ -152,9 +158,9 @@ Here's what your new site looks like:
 │                                                          │
 │   [Before/After Comparison Table]                       │
 │                                                          │
-│                            [📅 Sticky CTA] ←─┐         │
-└──────────────────────────────────────────────┘         │
-                                              Floats here
+│   [💬 Ask Question] ←──────────┐  [📅 Sticky CTA] ←─┐ │
+└─────────────────────────────────┘                     │ │
+                    Floats bottom-left     Floats bottom-right
 ```
 
 **Clean. Clear. Conversion-focused.** ✨
@@ -190,7 +196,14 @@ Here's what your new site looks like:
 - Urgency (limited offer)
 - Social proof (reviews + numbers)
 
-### 5. **Technical Excellence**
+### 5. **Live Question Widget** 🆕
+- Floating "Ask a Question" button
+- Instant engagement for curious visitors
+- Captures leads before they're ready to book
+- <5 minute response time promise
+- Mobile-optimized modal form
+
+### 6. **Technical Excellence**
 - Fast loading (<1 second)
 - Mobile responsive
 - Clean code
@@ -293,10 +306,12 @@ Tested and optimized for:
 ✅ Visual preview (see it now!)
 ✅ Production-ready code
 ✅ Professional copywriting
+✅ Live question widget 🆕
 ✅ Implementation guide
 ✅ Best practices
 ✅ A/B test variations
 ✅ Email templates
+✅ Backend API specs
 ✅ Analytics setup
 ✅ Troubleshooting guide
 ✅ Ongoing optimization tips
